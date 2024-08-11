@@ -2,8 +2,7 @@
   setup
   lang="ts"
 >
-import {computed, ComputedRef, defineProps, watch} from "vue";
-import {getQuery} from "@/pages/homePage/utils/query";
+import {computed, ComputedRef, defineProps, inject, watch} from "vue";
 import {useRouter} from "vue-router";
 import {definePagination} from "@/pages/homePage/utils/helpers";
 
@@ -13,8 +12,8 @@ const props = defineProps({
   currentPage: Number
 })
 const emit = defineEmits(['onPage'])
-const query = getQuery()
 const router = useRouter()
+const {value: query} = inject('query')
 
 const totalPages:ComputedRef<number> = computed(() => {
   return Math.ceil(props.totalCount / 6)
@@ -27,6 +26,13 @@ async function handlePage (page) {
 
 watch(
   () => props.currentPage,
+  () => {
+    definePagination(props.currentPage, props.perPage, totalPages.value)
+  }
+)
+
+watch(
+  () => props.totalCount,
   () => {
     definePagination(props.currentPage, props.perPage, totalPages.value)
   }

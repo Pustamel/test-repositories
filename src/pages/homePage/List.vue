@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-import {defineProps, ref, watchEffect} from 'vue'
+import {defineProps, inject, ref, watch, watchEffect} from 'vue'
 import Pagination from '@/shared/UI/Pagination.vue'
-import {getQuery} from '@/pages/homePage/utils/query'
 import {inRange} from "@/pages/homePage/utils/helpers";
 import ListItem from "@/pages/homePage/components/ListItem.vue";
 
@@ -16,7 +15,7 @@ const props = defineProps({
 let currentPage = ref(1)
 const perPage = ref(6)
 const localItems = ref({})
-const query = getQuery()
+const {query} = inject('query')
 
 if (query?.page) {
   currentPage.value = +query.page
@@ -25,6 +24,13 @@ if (query?.page) {
 function onPage (page): void {
   currentPage.value = page
 }
+
+watch(
+  () => props.totalCount,
+  () => {
+    currentPage.value = 1
+  }
+)
 
 watchEffect(() => {
   localItems.value = props.items.filter((item, index) => inRange(index, currentPage.value, perPage.value))
