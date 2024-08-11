@@ -1,3 +1,0 @@
-<template>
-  addition info
-</template>

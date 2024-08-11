@@ -3,7 +3,7 @@
   lang="ts"
 >
 import {defineProps, inject, ref, watch, watchEffect} from 'vue'
-import Pagination from '@/shared/UI/Pagination.vue'
+import Pagination from '@/entities/components/Pagination.vue'
 import {inRange} from "@/pages/homePage/utils/helpers";
 import ListItem from "@/pages/homePage/components/ListItem.vue";
 
